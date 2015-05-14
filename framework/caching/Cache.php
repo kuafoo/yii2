@@ -50,6 +50,8 @@ use yii\helpers\StringHelper;
  */
 abstract class Cache extends Component implements \ArrayAccess
 {
+    public $hashKey = false;
+
     /**
      * @var string a string prefixed to every cache key so that it is unique globally in the whole cache storage.
      * It is recommended that you set a unique cache key prefix for each application if the same cache
@@ -82,6 +84,7 @@ abstract class Cache extends Component implements \ArrayAccess
      */
     public function buildKey($key)
     {
+        if(!$this->hashKey) return $key;
         if (is_string($key)) {
             $key = ctype_alnum($key) && StringHelper::byteLength($key) <= 32 ? $key : md5($key);
         } else {
